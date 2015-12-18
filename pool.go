@@ -25,8 +25,15 @@ type GncpPool struct {
 	connCreator  func() (net.Conn, error)
 }
 
-var PoolIsCloseError = errors.New("Connection pool has been closed.")
+var (
+	PoolIsCloseError = errors.New("Connection pool has been closed.")
+	TimeOutError     = errors.New("Get Connection timeout.")
+)
 
+// NewPool return new ConnPool. It base on channel. It will init minConn connections in channel first.
+// When Get()/GetWithTimeout called, if channel still has connection it will return connection in channel.
+// Otherwise GncpPool will check number of connection already created,if the number less than maxConn,
+// it use connCreator function to create new connection.
 func NewPool(minConn, maxConn int, connCreator func() (net.Conn, error)) (*GncpPool, error) {
 	if minConn > maxConn || minConn < 0 || maxConn <= 0 {
 		return nil, errors.New("Number of connection bound error.")
@@ -57,6 +64,8 @@ func (p *GncpPool) init() error {
 	return nil
 }
 
+// Get get connection from connection pool. If connection poll is empty and alreay created connection number less than Max number of connection
+// it will create new one. Otherwise it wil wait someone put connection back.
 func (p *GncpPool) Get() (net.Conn, error) {
 	if p.isClosed() == true {
 		return nil, PoolIsCloseError
@@ -74,6 +83,8 @@ func (p *GncpPool) Get() (net.Conn, error) {
 	}
 }
 
+// GetWithTimeout can let you get connection wait for a time duration. If cannot get connection in this time.
+// It will return TimeOutError.
 func (p *GncpPool) GetWithTimeout(timeout time.Duration) (net.Conn, error) {
 	if p.isClosed() == true {
 		return nil, PoolIsCloseError
@@ -89,10 +100,12 @@ func (p *GncpPool) GetWithTimeout(timeout time.Duration) (net.Conn, error) {
 	case conn := <-p.conns:
 		return p.packConn(conn), nil
 	case <-time.After(timeout):
-		return nil, errors.New("Get Connection timeout.")
+		return nil, TimeOutError
 	}
 }
 
+// Close close the connection pool. When close the connection pool it also close all connection already in connection pool.
+// If connection not put back in connection it will not close. But it will close when it put back.
 func (p *GncpPool) Close() error {
 	if p.isClosed() == true {
 		return PoolIsCloseError
@@ -107,6 +120,7 @@ func (p *GncpPool) Close() error {
 	return nil
 }
 
+// Put can put connection back in connection pool. If connection has been closed, the conneciton will be close too.
 func (p *GncpPool) Put(conn net.Conn) error {
 	if p.isClosed() == true {
 		return PoolIsCloseError
@@ -161,7 +175,6 @@ func (p *GncpPool) createConn() (net.Conn, error) {
 
 func (p *GncpPool) packConn(conn net.Conn) net.Conn {
 	ret := &CpConn{pool: p}
-	ret.inpool = true
 	ret.Conn = conn
 	return ret
 }
