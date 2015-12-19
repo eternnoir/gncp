@@ -82,7 +82,7 @@ func TestGetConnTimeout(t *testing.T) {
 		}
 	}
 
-	_, err = pool.GetWithTimeout(10000)
+	_, err = pool.GetWithTimeout(time.Duration(1) * time.Second)
 	if err != nil {
 		fmt.Println(err)
 		return
