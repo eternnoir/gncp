@@ -13,7 +13,7 @@ go get github.com/eternnoir/gncp
 
 Full document: https://godoc.org/github.con/eternnoir/gncp
 
-```golang
+```go
 
 // connCreator let connection know how to create new connection.
 func connCreator() (net.Conn, error) {
