@@ -1,7 +1,7 @@
-# gncp ![Build](https://travis-ci.org/eternnoir/gncp.svg?branch=develop)
-A thread safe connection pool for net.conn. Easy to manage, reuse and limit connections in golang.
+# gncp [![Doc](http://img.shields.io/badge/go-documentation-blue.svg)](https://godoc.org/github.com/eternnoir/gncp) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/eternnoir/gncp/blob/master/LICENSE) [![Build](https://travis-ci.org/eternnoir/gncp.svg?branch=develop)](https://travis-ci.org/eternnoir/gncp)
+A thread safe connection pool for net.conn interface. Easy to manage, reuse and limit connections in golang.
 
-## Insatall
+## Install
 
 Use `go get` to install package:
 
@@ -13,7 +13,7 @@ go get github.com/eternnoir/gncp
 
 Full document: https://godoc.org/github.con/eternnoir/gncp
 
-```golang
+```go
 
 // connCreator let connection know how to create new connection.
 func connCreator() (net.Conn, error) {
