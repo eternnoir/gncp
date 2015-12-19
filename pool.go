@@ -34,7 +34,7 @@ var (
 
 // NewPool return new ConnPool. It base on channel. It will init minConn connections in channel first.
 // When Get()/GetWithTimeout called, if channel still has connection it will get connection from channel.
-// Otherwise GncpPool will check number of connection already created,if the number less than maxConn,
+// Otherwise GncpPool check number of connection which had already created as the number are less than maxConn,
 // it use connCreator function to create new connection.
 func NewPool(minConn, maxConn int, connCreator func() (net.Conn, error)) (*GncpPool, error) {
 	if minConn > maxConn || minConn < 0 || maxConn <= 0 {
