@@ -15,6 +15,7 @@ type ConnPool interface {
 	Remove(conn net.Conn) error
 }
 
+// GncpPool implements ConnPool interface. Use channel buffer connections.
 type GncpPool struct {
 	lock         sync.Mutex
 	conns        chan net.Conn
@@ -27,7 +28,8 @@ type GncpPool struct {
 
 var (
 	PoolIsCloseError = errors.New("Connection pool has been closed.")
-	TimeOutError     = errors.New("Get Connection timeout.")
+	// Error for get connection time out.
+	TimeOutError = errors.New("Get Connection timeout.")
 )
 
 // NewPool return new ConnPool. It base on channel. It will init minConn connections in channel first.
