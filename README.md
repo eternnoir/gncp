@@ -42,7 +42,7 @@ err := conn.Close()
 // And this method will close connection.
 err := pool.Remove(conn)
 
-// Close connection pool. Also close all connection in pool.
+// Close connection pool. All connections in pool will be closed.
 err := pool.Close()
 ```
 
