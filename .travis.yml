@@ -5,4 +5,6 @@ go:
   - 1.4
   - tip
 install:
-    - go get ./... -v
+    - go get ./...
+script:
+    - go test -v ./...
