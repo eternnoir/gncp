@@ -1,7 +1,7 @@
 # gncp ![Build](https://travis-ci.org/eternnoir/gncp.svg?branch=develop)
 A thread safe connection pool for net.conn. Easy to manage, reuse and limit connections in golang.
 
-## Insatall
+## Install
 
 Use `go get` to install package:
 
