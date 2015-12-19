@@ -147,14 +147,21 @@ func (p *GncpPool) isClosed() bool {
 	return ret
 }
 
-// RemoveConn let conn not belong connection pool.
+// RemoveConn let connection not belong connection pool.And it will close connection.
 func (p *GncpPool) Remove(conn net.Conn) error {
 	if p.isClosed() == true {
 		return PoolIsCloseError
 	}
+
 	p.lock.Lock()
 	p.totalConnNum = p.totalConnNum - 1
-	p.lock.Lock()
+	p.lock.Unlock()
+	switch conn.(type) {
+	case *CpConn:
+		return conn.(*CpConn).Destroy()
+	default:
+		return conn.Close()
+	}
 	return nil
 }
 
