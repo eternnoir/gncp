@@ -1,5 +1,5 @@
 # gncp ![Build](https://travis-ci.org/eternnoir/gncp.svg?branch=develop)
-A thread safe connection pool for net.conn. Easy to manage and reuse connection in golang.
+A thread safe connection pool for net.conn. Easy to manage, reuse and limit connections in golang.
 
 ## Insatall
 
