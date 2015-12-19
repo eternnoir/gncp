@@ -9,6 +9,12 @@ Use `go get` to install package:
 go get github.com/eternnoir/gncp
 ```
 
+In source code:
+
+```go
+import "github.com/eternnoir/gncp"
+```
+
 ## Usage Example
 
 Full document: https://godoc.org/github.con/eternnoir/gncp
@@ -24,7 +30,7 @@ func connCreator() (net.Conn, error) {
 // If connection not enough in pool, pool will call creator to create new connection.
 // But when total connection number pool created reach 10 connection, pool will not creat
 // any new connection until someone call Remove().
-pool, err := NewPool(3, 10, connCreator)
+pool, err := gncp.NewPool(3, 10, connCreator)
 
 // Get connection from pool. If pool has no connection and total connection reach max number
 // of connections, this method will block until someone put back connection to pool.
