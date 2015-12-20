@@ -15,7 +15,7 @@ In source code:
 import "github.com/eternnoir/gncp"
 ```
 
-## Usage Example
+## Usage
 
 Full document: https://godoc.org/github.con/eternnoir/gncp
 
