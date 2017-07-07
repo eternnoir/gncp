@@ -2,9 +2,12 @@ package gncp
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"context"
+
+	"github.com/stretchr/testify/assert"
 
 	"net"
 )
@@ -83,6 +86,36 @@ func TestGetConnTimeout(t *testing.T) {
 	}
 
 	_, err = pool.GetWithTimeout(time.Duration(1) * time.Second)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	assert.Fail("Need get timeout error.")
+}
+
+func TestGetConnContxt(t *testing.T) {
+	assert := assert.New(t)
+	pool, err := NewPool(1, 3, connCreator)
+	if err != nil {
+		assert.Fail("Init conn pool fail.")
+		return
+	}
+
+	// Get all connection from pool
+	for i := 0; i < 3; i++ {
+		conn, err := pool.Get()
+		if err != nil {
+			assert.Fail("Get conn fail.")
+		}
+		_, err = conn.Write([]byte("Test conn1"))
+		if err != nil {
+			assert.Fail("Write message fail.")
+		}
+	}
+	ctx := context.Background()
+	ctxTimeout, cancel := context.WithTimeout(ctx, time.Duration(1)*time.Second)
+	defer cancel()
+	_, err = pool.GetWithContext(ctxTimeout)
 	if err != nil {
 		fmt.Println(err)
 		return
