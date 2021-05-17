@@ -17,7 +17,7 @@ import "github.com/eternnoir/gncp"
 
 ## Usage
 
-Full document: https://godoc.org/github.con/eternnoir/gncp
+Full Documentation: https://godoc.org/github.com/eternnoir/gncp
 
 ```go
 
